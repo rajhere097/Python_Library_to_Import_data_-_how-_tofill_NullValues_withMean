@@ -1,0 +1,29 @@
+## Importing data from googledrive
+
+import pandas as pd
+import gdown
+
+# create the download link
+file = '1ukGPSX-BVGVoz8CB7gpZLQcFPGbpElg-'
+url = f'https://drive.google.com/uc?id={file}'
+
+#download the file
+output = 'data.csv'
+gdown.download(url,output, quiet = False)
+
+df = pd.read_csv(output)
+print(df)
+
+
+## seperating categorical and numerical columns using list comprehension
+
+categorical_column = [i for i in df.columns if df[i].dtype == 'object']
+numerical_columns = [i for i in df.columns if df[i].dtype != 'object']
+
+## replacing null values with average
+
+for i in numerical_columns:
+  mean_value = df[i].mean()
+
+  df[i].fillna(mean_value, inplace = True)
+
